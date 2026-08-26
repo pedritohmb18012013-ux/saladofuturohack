@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Zunder" />
+  <meta property="og:title" content="Zunder — Sala do Futuro" />
+  <meta property="og:description" content="Faça tarefas, redações e atividades da Sala do Futuro de forma fácil e rápida." />
+  <meta property="og:image" content="https://zunder.lat/images/zunder-card-z.jpg" />
+  <meta property="og:image:alt" content="Zunder — Discord.gg/platformdestroyer" />
+  <meta property="og:url" content="https://zunder.lat/" />
+  <meta name="description" content="Faça tarefas, redações e atividades da Sala do Futuro de forma fácil e rápida." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zunder — Sala do Futuro" />
+  <meta name="twitter:description" content="Faça tarefas, redações e atividades da Sala do Futuro de forma fácil e rápida." />
+  <meta name="twitter:image" content="https://zunder.lat/images/zunder-card-z.jpg" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zunder</title>
+  <link rel="icon" type="image/png" href="/images/zunder-favicon.png" />
+  <link rel="icon" href="/images/zunder.ico" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/images/zunder-apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/site.css" />
+  <style id="page-style">
+    .page-content {
+      width: 100%;
+      min-height: calc(100dvh - 80px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--donations-col, 340px);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .donations-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+      align-self: start;
+    }
+
+    .content-col {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+      min-height: 100%;
+    }
+
+    .content-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .donations-side {
+      --donor-row-h: 56px;
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 24px;
+      width: 100%;
+      align-self: stretch;
+    }
+
+    .donations-side h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+
+    .home-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .home-stat-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 18px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a.home-stat-card:hover { background: var(--card-hover); border-color: var(--border-light); }
+
+    .home-stat-head { display: flex; align-items: center; gap: 7px; }
+    .home-stat-head svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-muted); }
+    .home-stat-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+    .home-stat-value { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; color: var(--text); }
+    .home-stat-sub { font-size: 12px; line-height: 1.35; color: var(--text-secondary); }
+    .home-stat-card.is-loading .home-stat-value { font-size: 16px; color: var(--text-muted); }
+    .home-stat-card--pendencias .home-stat-head svg { color: #a0a0a0; }
+    .home-stat-card--faltas .home-stat-head svg { color: #a8a8a8; }
+    button.home-stat-card { width: 100%; text-align: left; cursor: pointer; font-family: inherit; }
+
+    .top-donor {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 13px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .top-donor svg { width: 18px; height: 18px; color: #bfbfbf; flex-shrink: 0; }
+    .top-donor-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .top-donor-label { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+    .top-donor .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; color: var(--text); }
+    .top-donor .amt { font-weight: 700; color: var(--text); white-space: nowrap; }
+
+    .donor-list { display: flex; flex-direction: column; flex: 1; min-height: calc(var(--donor-row-h) * 10); }
+    .donor-row {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+    }
+    .donor-item:first-child .donor-row { border-top: none; padding-top: 0; }
+
+    .donor-av {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .donor-info { flex: 1; min-width: 0; }
+    .donor-info .n { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .donor-info .msg { font-size: 11px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; word-break: break-word; }
+    .donor-info .msg--expansivel { word-break: break-word; }
+    .donor-info .msg-toggle { background: none; border: none; padding: 0; margin-left: 2px; color: var(--purple); font-family: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .donor-info .msg-toggle:hover { text-decoration: underline; }
+    .donor-info .msg-reply { font-size: 11px; color: var(--text-secondary); margin-top: 3px; padding-left: 8px; border-left: 2px solid var(--purple); line-height: 1.4; word-break: break-word; }
+    .donor-info .tags { display: flex; gap: 4px; margin-top: 2px; }
+    .donor-info .tags span { font-size: 11px; }
+    .donor-amt { text-align: right; flex-shrink: 0; }
+    .donor-amt .price { font-size: 14px; font-weight: 700; color: var(--green); }
+    .donor-amt .time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+
+    .welcome-card {
+      padding: 36px 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .welcome-card h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+    .welcome-card p { font-size: 13px; color: var(--text-secondary); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; font-weight: 500; }
+    .avatar.lg { width: 68px; height: 68px; font-size: 26px; }
+
+    .donation-card {
+      padding: 24px 36px 28px;
+      background: linear-gradient(135deg, #1b1b1b 0%, #323232 50%, #191919 100%);
+      border: 1px solid rgba(86, 86, 86, 0.3);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+    }
+    .donation-card::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -30px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(113, 113, 113, 0.22) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .donation-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; position: relative; z-index: 1; }
+    .donation-logo-wrap { height: 64px; overflow: hidden; display: flex; align-items: center; }
+    .donation-logo { height: 80px; width: auto; object-fit: contain; object-position: left center; display: block; }
+    .donation-logo-text { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; color: #fff; }
+    .donation-stats { text-align: right; }
+    .donation-stats .val { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .donation-meta { margin-top: 6px; font-size: 14px; }
+    .donation-meta .meta-label { color: #fff; font-weight: 500; }
+    .donation-card h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 8px; position: relative; z-index: 1; }
+    .donation-card .desc { font-size: 15px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 540px; margin-bottom: 20px; position: relative; z-index: 1; }
+
+    .donation-apoio {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+    .apoio-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 7px; flex-wrap: wrap; }
+    .apoio-right { display: flex; align-items: center; gap: 12px; }
+    .apoio-label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); }
+    .apoio-label.is-full { color: #69f0ae; }
+    .apoio-val { font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; }
+    .apoio-track { height: 5px; border-radius: 999px; background: rgba(255,255,255,0.1); overflow: hidden; }
+    .apoio-fill { height: 100%; width: 0%; border-radius: 999px; background: var(--purple); transition: width 0.6s ease; }
+    .apoio-fill.is-full { background: #00c853; }
+
+    .btn-apoio-benef {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+      color: rgba(255,255,255,0.55);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .btn-apoio-benef svg, .btn-apoio-benef img { width: 16px; height: 16px; flex-shrink: 0; object-fit: contain; }
+    .btn-apoio-benef:hover { color: rgba(255,255,255,0.85); }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      background: var(--purple);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+      position: relative;
+      z-index: 1;
+    }
+    .btn-primary svg, .btn-primary .btn-icon { width: 18px; height: 18px; color: #fff; flex-shrink: 0; }
+    .btn-primary:hover { background: #484848; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(86, 86, 86, 0.4); }
+
+    .donation-card-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; position: relative; z-index: 1; }
+
+    .btn-ver-doacoes {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-ver-doacoes svg { width: 18px; height: 18px; flex-shrink: 0; color: #fff; }
+    .btn-ver-doacoes:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.16); }
+
+    .section-label { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 14px; }
+    .section-label.uppercase { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+
+    .platform-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 28px 26px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.12s;
+    }
+    .platform-item:hover { background: var(--card-hover); border-color: var(--border-light); transform: translateY(-1px); }
+    .platform-item .item-icon { width: 52px; height: 52px; flex-shrink: 0; border-radius: 13px; overflow: hidden; }
+    .platform-item .item-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .platform-item .item-text h4 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+    .platform-item .item-text p { font-size: 13px; line-height: 1.5; color: var(--text-muted); }
+    .item-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    .platform-item.is-disabled { cursor: default; opacity: 0.55; filter: grayscale(0.4); }
+    .platform-item.is-disabled:hover { background: var(--card); border-color: var(--border); transform: none; }
+    .platform-item .item-text h4 { display: flex; align-items: center; gap: 8px; }
+    .platform-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); background: rgba(255,255,255,0.06); border: 1px solid var(--border); padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .platform-badge.is-update { color: #d0a54a; background: rgba(208,165,74,0.14); border-color: rgba(208,165,74,0.35); }
+    .platform-badge.is-apoiador { color: #69f0ae; background: rgba(105,240,174,0.12); border-color: rgba(105,240,174,0.35); }
+    .platform-item.is-update { opacity: 0.7; }
+    .platform-item.is-update:hover { background: var(--card); border-color: var(--border); transform: none; }
+
+    .platforms-section { flex: 1; display: flex; flex-direction: column; width: 100%; }
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-content: start;
+    }
+    .platform-loading, .platform-empty {
+      grid-column: 1 / -1;
+      padding: 28px 20px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    body.plataformas-page .platform-grid { grid-template-columns: 1fr; gap: 14px; }
+    body.plataformas-page .platform-item { padding: 22px 24px; }
+    body.plataformas-page .welcome-card,
+    body.plataformas-page .home-stats,
+    body.plataformas-page .donation-card,
+    body.plataformas-page .donations-col { display: none; }
+    body.plataformas-page .page-content { grid-template-columns: 1fr; }
+
+    .donations-tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+    .donations-tab {
+      flex: 1;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .donations-tab:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+    .donations-tab.active { background: var(--purple-active); border-color: rgba(86, 86, 86, 0.4); color: var(--text); }
+
+    .donations-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: calc(var(--donor-row-h) * 10);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .donations-spinner { width: 32px; height: 32px; border: 3px solid rgba(86, 86, 86, 0.2); border-top-color: var(--purple); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (min-width: 961px) {
+      .donations-side {
+        --donor-row-h: 42px;
+        padding: 14px 16px 16px;
+        align-self: start;
+        max-height: none;
+        overflow: visible;
+      }
+      .donations-side h3 { font-size: 13px; margin-bottom: 8px; }
+      .donations-tabs { gap: 6px; margin-bottom: 10px; }
+      .donations-tab { padding: 7px 10px; font-size: 12px; border-radius: 8px; }
+      .top-donor { gap: 8px; padding: 8px 10px; margin-bottom: 10px; font-size: 11px; border-radius: 10px; }
+      .top-donor svg { width: 15px; height: 15px; }
+      .top-donor-label { font-size: 9px; }
+      .top-donor .name { font-size: 12px; }
+      .top-donor .amt { font-size: 12px; }
+      .donor-list { flex: 0 0 auto; min-height: calc(var(--donor-row-h) * 10); max-height: none; overflow: visible; }
+      .donor-row { gap: 8px; min-height: var(--donor-row-h); padding: 0; flex-shrink: 0; }
+      .donor-av { width: 30px; height: 30px; font-size: 12px; }
+      .donor-info .n { font-size: 12px; line-height: 1.2; }
+      .donor-amt .price { font-size: 12px; line-height: 1.2; }
+      .donor-amt .time { font-size: 10px; line-height: 1.1; margin-top: 0; }
+      .donations-loading { gap: 10px; min-height: calc(var(--donor-row-h) * 10); padding: 0; font-size: 12px; }
+      .donations-spinner { width: 24px; height: 24px; }
+    }
+
+    @media (max-width: 1100px) { .platform-grid { grid-template-columns: 1fr 1fr; } }
+
+    @media (max-width: 960px) {
+      .page-content { grid-template-columns: 1fr; }
+      .donations-col { width: 100%; }
+      .donations-side { min-height: calc(var(--donor-row-h) * 10 + 240px); max-height: none; overflow: visible; }
+      .platform-grid { grid-template-columns: 1fr; }
+      .welcome-card { padding: 24px; }
+      .welcome-card h1 { font-size: 26px; }
+      .donation-card { padding: 20px 24px 24px; }
+      .donation-top { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .donation-stats { text-align: left; }
+      .donation-card-actions { width: 100%; }
+      .donation-card .btn-primary, .btn-ver-doacoes { width: 100%; justify-content: center; }
+      .btn-ver-doacoes { display: inline-flex; }
+      .donations-side { scroll-margin-top: calc(var(--mobile-top-h) + 12px); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="discord-popup-overlay" id="discordPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="discordPopupTitle">
+      <button class="discord-popup-close" id="discordPopupClose" aria-label="Fechar">✕</button>
+      <img class="discord-popup-banner" src="/images/image0.webp" alt="Banner do servidor oficial no Discord" />
+      <div class="discord-popup-body">
+        <h3 id="discordPopupTitle">Servidor oficial</h3>
+        <p>O Zunder tem o objetivo de ajudar os estudantes com as tarefas da Sala Do Futuro, proporcionando notas escolares mais altas e tempo de lazer.</p>
+        <p>Temos bots para várias plataformas (Tarefas, Redação, Khan Academy, Matific e mais), com fila prioritária pra quem apoia o projeto.</p>
+        <a class="discord-popup-btn" href="https://discord.gg/zunder" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+          Entrar no Discord
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="discord-popup-overlay" id="pdPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="pdPopupTitle">
+      <button class="discord-popup-close" id="pdPopupClose" aria-label="Fechar">✕</button>
+      <img class="discord-popup-banner" src="/images/platformdestroyerbanner.png" alt="Banner do servidor Platform Destroyer no Discord" />
+      <div class="discord-popup-body">
+        <h3 id="pdPopupTitle">Platform Destroyer</h3>
+        <p>A Platform Destroyer tem o objetivo de ajudar os estudantes com as tarefas da Sala Do Futuro (taskitos), proporcionando notas escolares mais altas e tempo de lazer.</p>
+        <a class="discord-popup-btn" href="https://discord.gg/platformdestroyer" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+          Entrar no Discord
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="discord-popup-overlay" id="partnerPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="partnerPopupTitle">
+      <button class="discord-popup-close partner-popup-close" id="partnerPopupClose" aria-label="Fechar" disabled>✕</button>
+      <img class="discord-popup-banner" src="/images/parceria.png" alt="Banner da parceria HITE" />
+      <div class="discord-popup-body">
+        <h3 id="partnerPopupTitle" class="popup-title-with-icon">
+          <img class="popup-emoji popup-server-icon" src="https://cdn.discordapp.com/icons/1426345992105623624/bc3dca3b8326854e88bdf1a548825266.webp?size=1024" alt="" width="28" height="28">
+          HITE
+        </h3>
+        <p class="popup-lead-with-icon">
+          <img class="popup-emoji" src="https://cdn.discordapp.com/emojis/1529674995389698170.png" alt="" width="22" height="22">
+          Complete suas quests do Discord sem esforço!
+        </p>
+        <p>Facilitamos sua vida no Discord: ajudamos você a completar suas quests de forma prática e rápida, seja no Android, PC ou iOS. Colete e conclua suas missões com muito mais facilidade. Fique de olho, porque o servidor vai ganhar novas automações em breve <img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1529674072940613672.png" alt="" width="20" height="20"></p>
+        <button class="discord-popup-btn partner-coupon-btn" id="partnerCouponBtn" type="button">cupom: cmsp</button>
+        <div class="partner-copy-hint" id="partnerCopyHint">Clique para copiar</div>
+        <a class="discord-popup-btn partner-link-btn" href="https://discord.gg/hite" target="_blank" rel="noopener noreferrer">Ir para o servidor</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="discord-popup-overlay" id="apoiadorPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="apoiadorPopupTitle">
+      <button class="discord-popup-close" id="apoiadorPopupClose" aria-label="Fechar">✕</button>
+      <img class="discord-popup-banner" src="/images/apoiador-zunder.jpg" alt="Banner do Apoiador" />
+      <div class="discord-popup-body">
+        <h3 id="apoiadorPopupTitle" class="popup-title-with-icon">
+          <img class="popup-emoji popup-server-icon" src="https://cdn.discordapp.com/emojis/1094481836073304154.webp?size=32" alt="" width="28" height="28">
+          Seja Apoiador
+        </h3>
+        <p>Doe <strong>R$ 4,90</strong> e aproveite:<br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> <strong>SPeak liberado</strong> (exclusivo apoiadores)<br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> Navegação mais limpa e rápida<br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> <strong>Prioridade máxima</strong> na fila<br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> <strong>Moedas e XP no Matific</strong><br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> Site 100% sem anúncios<br><img class="popup-emoji popup-emoji-inline" src="https://cdn.discordapp.com/emojis/1502560747258118265.webp?size=32" alt="" width="20" height="20"> Pop-ups bloqueados</p>
+        <a class="discord-popup-btn" href="/doar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          Fazer uma doação
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="discord-popup-overlay" id="pendenciasPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="pendenciasPopupTitle">
+      <button class="discord-popup-close" id="pendenciasPopupClose" type="button" aria-label="Fechar">✕</button>
+      <div class="pendencias-popup-body">
+        <h3 id="pendenciasPopupTitle">Pendências</h3>
+        <p id="pendenciasPopupSub">Veja onde estão suas atividades pendentes na Sala do Futuro.</p>
+        <div class="pendencias-categorias" id="pendenciasCategorias"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="discord-popup-overlay" id="faltasPopup" aria-hidden="true">
+    <div class="discord-popup" role="dialog" aria-modal="true" aria-labelledby="faltasPopupTitle">
+      <button class="discord-popup-close" id="faltasPopupClose" type="button" aria-label="Fechar">✕</button>
+      <div class="pendencias-popup-body">
+        <h3 id="faltasPopupTitle">Faltas</h3>
+        <p id="faltasPopupSub">Faltas e presença por matéria no bimestre atual.</p>
+        <div class="faltas-categorias" id="faltasCategorias"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-clip">
+        <img class="logo-img" src="/images/zunder-lockup.png" alt="Zunder" decoding="sync" fetchpriority="high" />
+      </div>
+    </div>
+
+    <div class="nav-label">Principal</div>
+    <nav class="nav-group">
+      <a class="nav-link active" data-page="inicio" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span>Início</span>
+      </a>
+      <a class="nav-link" data-page="tarefas" href="/tarefas">
+        <img class="nav-icon-img" src="/images/tarefasp.png" alt="" />
+        <span>TarefaSP</span>
+      </a>
+      <a class="nav-link" data-page="redacao" href="/redacao">
+        <img class="nav-icon-img" src="/images/redacaosp.png" alt="" />
+        <span>Redação</span>
+      </a>
+      <a class="nav-link" data-page="plataformas" href="/#plataformas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect>
+        </svg>
+        <span>Plataformas</span>
+      </a>
+      <a class="nav-link" data-page="apostilas" href="/apostilas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 016.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"></path>
+        </svg>
+        <span>Apostilas</span>
+      </a>
+    </nav>
+
+    <div class="nav-label">Comunidade</div>
+    <nav class="nav-group">
+      <a class="nav-link nav-link-discord" href="https://discord.gg/platformdestroyer" target="_blank" rel="noopener noreferrer">
+        <svg class="nav-discord-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path></svg>
+        <span>Discord</span>
+        <svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+      <a class="nav-link nav-link-cmsp" href="https://discord.gg/hite" target="_blank" rel="noopener noreferrer">
+        <img class="nav-icon-img is-round" src="https://cdn.discordapp.com/icons/1426345992105623624/bc3dca3b8326854e88bdf1a548825266.webp?size=1024" alt="">
+        <span>HITE</span>
+        <svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      </a>
+    </nav>
+
+    <div class="sidebar-spacer"></div>
+    <div class="ad-sidebar-tower" aria-label="Publicidade">
+      <div class="ad-slot ad-slot--160x300">
+        <script>
+          atOptions = { 'key' : '3564ad1074e206fd7ac5b3059f8c71a8', 'format' : 'iframe', 'height' : 300, 'width' : 160, 'params' : {} };
+        </script>
+        <script src="https://www.highperformanceformat.com/3564ad1074e206fd7ac5b3059f8c71a8/invoke.js"></script>
+      </div>
+    </div>
+
+    <div class="user-card">
+      <div class="avatar" id="sidebarAvatar">U</div>
+      <div class="user-meta">
+        <div class="name" id="sidebarName">USUÁRIO</div>
+        <div class="sub" id="sidebarSub">Carregando...</div>
+      </div>
+      <button class="icon-btn" id="btnLogout" aria-label="Sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="page-content">
+      <div class="content-col">
+        <div class="card welcome-card">
+          <div class="avatar lg" id="welcomeAvatar">U</div>
+          <div>
+            <h1 id="welcomeTitle">Carregando...</h1>
+            <p id="welcomeSub">Sala do Futuro · SP</p>
+          </div>
+        </div>
+
+        <div class="home-stats">
+          <button type="button" class="home-stat-card home-stat-card--pendencias is-loading" id="cardPendencias">
+            <div class="home-stat-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              <span class="home-stat-label">Pendências</span>
+            </div>
+            <span class="home-stat-value" id="pendenciasTotal">—</span>
+            <span class="home-stat-sub" id="pendenciasDetalhe">Carregando...</span>
+          </button>
+          <button type="button" class="home-stat-card home-stat-card--faltas is-loading" id="cardFaltas">
+            <div class="home-stat-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span class="home-stat-label">Faltas</span>
+            </div>
+            <span class="home-stat-value" id="faltasTotal">—</span>
+            <span class="home-stat-sub" id="faltasDetalhe">Carregando...</span>
+          </button>
+        </div>
+
+        <div class="content-main">
+          <div class="donation-card">
+            <div class="donation-top">
+              <div class="donation-logo-wrap">
+                <span class="donation-logo-text">Doações</span>
+              </div>
+              <div class="donation-stats">
+                <div class="val" id="donationTotal">0</div>
+                <div class="donation-meta"><span class="meta-label">Doações hoje</span></div>
+              </div>
+            </div>
+            <h2>Ajude o Zunder a se manter</h2>
+            <p class="desc">Todos os desenvolvedores trabalham de graça pra ajudar você, que não tem tempo ou oportunidade. Até 10 centavos já ajudam a manter tudo funcionando. Obrigado e bons estudos!</p>
+            <div class="donation-apoio" id="apoioProgresso" hidden>
+              <div class="apoio-top">
+                <span class="apoio-label" id="apoioLabel">Desbloqueie o Apoiador</span>
+                <div class="apoio-right">
+                  <span class="apoio-val" id="apoioValor">R$&nbsp;0,00 de R$&nbsp;4,90</span>
+                  <button type="button" class="btn-apoio-benef" id="btnApoioBenef">
+                    <img class="apoio-benef-icon" src="https://cdn.discordapp.com/emojis/1127180292923326484.webp?size=44" alt="" width="18" height="18">
+                    Benefícios do Apoiador
+                  </button>
+                </div>
+              </div>
+              <div class="apoio-track"><div class="apoio-fill" id="apoioFill"></div></div>
+            </div>
+            <div class="donation-card-actions">
+              <a class="btn-primary" href="/doar" style="text-decoration:none;">
+                <img class="btn-icon" src="https://cdn.discordapp.com/emojis/1414960842134523964.webp?size=32" alt="" style="width:18px;height:18px;object-fit:contain;">
+                Fazer uma doação
+              </a>
+              <button type="button" class="btn-ver-doacoes" id="btnVerDoacoes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                Ver doações
+              </button>
+            </div>
+          </div>
+
+          <div class="platforms-section" id="plataformas">
+            <div class="section-label uppercase">Suas Plataformas</div>
+            <div class="platform-grid" id="platformGrid">
+              <div class="platform-loading">Carregando plataformas da sua conta...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="donations-col">
+        <aside class="donations-side" id="doacoesRecentes">
+          <div class="donations-tabs">
+            <button class="donations-tab active" id="tabDoacoes" type="button">Doações</button>
+            <button class="donations-tab" id="tabRanking" type="button">Ranking</button>
+          </div>
+          <h3 id="donationsTitle">Doações recentes</h3>
+          <div class="donations-loading" id="donationsLoading">
+            <div class="donations-spinner"></div>
+            <span>Carregando...</span>
+          </div>
+          <div class="donor-list" id="donorList"></div>
+        </aside>
+        <div class="ad-zone-vertical">
+          <div class="ad-slot ad-slot--160x300">
+            <script>
+              atOptions = {
+                'key' : '3564ad1074e206fd7ac5b3059f8c71a8',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/3564ad1074e206fd7ac5b3059f8c71a8/invoke.js"></script>
+          </div>
+          <div class="ad-slot ad-slot--160x300">
+            <script>
+              atOptions = {
+                'key' : '3564ad1074e206fd7ac5b3059f8c71a8',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/3564ad1074e206fd7ac5b3059f8c71a8/invoke.js"></script>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="ad-zone">
+      <div class="ad-slot ad-slot--728x90">
+        <script>
+          atOptions = {
+            'key' : 'c6da777be9e5dbb9692651b7c69e47a3',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/c6da777be9e5dbb9692651b7c69e47a3/invoke.js"></script>
+      </div>
+      <div class="ad-slot ad-slot--320x50">
+        <script>
+          atOptions = {
+            'key' : '74c2440d4945399e465d4111ac40db15',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/74c2440d4945399e465d4111ac40db15/invoke.js"></script>
+      </div>
+      <div class="ad-slot ad-slot--300x250">
+        <script>
+          atOptions = {
+            'key' : 'd3a4ce75d29da27c1f17b47a1e0b7d95',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/d3a4ce75d29da27c1f17b47a1e0b7d95/invoke.js"></script>
+      </div>
+      <div id="container-bb12e5ff797df6c851458eecf0366a84"></div>
+      <script async="async" data-cfasync="false" src="https://pl30573981.effectivecpmnetwork.com/bb12e5ff797df6c851458eecf0366a84/invoke.js"></script>
+    </div>
+  </main>
+</div>
+
+<script src="js/notifications.js"></script>
+<script src="js/pending-jobs.js"></script>
+<script src="js/app.js"></script>
+<script src="js/adblock.js"></script>
+<script src="js/apoiador.js"></script>
+<script src="js/popunder.js"></script>
+<script>
+  (function() {
+    'use strict';
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function formatarMoeda(valor) {
+      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatarTempo(iso) {
+      if (!iso) return '';
+      const data = new Date(iso);
+      if (Number.isNaN(data.getTime())) return '';
+      const diffMin = Math.floor((Date.now() - data.getTime()) / 60000);
+      if (diffMin < 1) return 'agora';
+      if (diffMin < 60) return `${diffMin}min`;
+      const diffH = Math.floor(diffMin / 60);
+      if (diffH < 24) return `${diffH}h`;
+      const diffD = Math.floor(diffH / 24);
+      if (diffD < 7) return `${diffD}d`;
+      return data.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+    }
+
+    function inicialDoador(nome) {
+      const texto = String(nome || '?').trim();
+      return texto ? texto.charAt(0).toUpperCase() : '?';
+    }
+
+    function corAvatarDoador(index) {
+      const cores = [
+        'linear-gradient(135deg,#7a7a7a,#4f4f4f)',
+        'linear-gradient(135deg,#717171,#414141)',
+        'linear-gradient(135deg,#828282,#525252)',
+        'linear-gradient(135deg,#858585,#6a6a6a)',
+        'linear-gradient(135deg,#a7a7a7,#878787)',
+        'linear-gradient(135deg,#7c7c7c,#626262)',
+        'linear-gradient(135deg,#858585,#656565)',
+        'linear-gradient(135deg,#808080,#666666)',
+      ];
+      return cores[index % cores.length];
+    }
+
+    function pluralizar(qtd, singular, plural) {
+      return qtd === 1 ? `1 ${singular}` : `${qtd} ${plural}`;
+    }
+
+    function formatarPendenciasDetalhe(pendencias) {
+      const partes = [];
+      if (pendencias.tarefas) partes.push(pluralizar(pendencias.tarefas, 'tarefa', 'tarefas'));
+      if (pendencias.redacoes) partes.push(pluralizar(pendencias.redacoes, 'redação', 'redações'));
+      if (pendencias.provas) partes.push(pluralizar(pendencias.provas, 'prova', 'provas'));
+      if (!partes.length) return 'Nenhuma pendência';
+      return partes.join(' · ');
+    }
+
+    function formatarFaltasDetalhe(faltas) {
+      const total = Number(faltas.total || 0);
+      const disciplinas = faltas.disciplinas || [];
+      if (!total) return 'Nenhuma falta no bimestre';
+      const comFaltas = disciplinas.filter((item) => Number(item.faltas) > 0);
+      if (comFaltas.length === 1) return `${comFaltas[0].disciplina}: ${comFaltas[0].faltas}`;
+      if (comFaltas.length > 1) {
+        const top = [...comFaltas].sort((a, b) => Number(b.faltas) - Number(a.faltas))[0];
+        return `${top.disciplina} · +${comFaltas.length - 1} matéria${comFaltas.length > 2 ? 's' : ''}`;
+      }
+      return pluralizar(total, 'falta no bimestre', 'faltas no bimestre');
+    }
+
+    function aplicarUsuario(user) {
+      const nome = user.nome || 'Usuário';
+      const subtitulo = user.subtitulo || [user.turma, user.escola].filter(Boolean).join(' · ');
+      const inicial = user.inicial || nome.charAt(0).toUpperCase();
+      document.getElementById('welcomeTitle').textContent = `${App.saudacao()}, ${nome.split(' ')[0]}`;
+      document.getElementById('welcomeSub').textContent = subtitulo || 'Sala do Futuro · SP';
+      document.getElementById('welcomeAvatar').textContent = inicial;
+      App.aplicarUsuario(user);
+    }
+
+    function renderizarPlataformas(lista) {
+      const grid = document.getElementById('platformGrid');
+      if (!grid) return;
+      if (!lista.length) {
+        grid.innerHTML = '<div class="platform-empty">Nenhuma plataforma com script disponível na sua conta.</div>';
+        return;
+      }
+      grid.innerHTML = lista.map((item) => {
+        const status = item.status || (item.ativo === false ? 'em_breve' : 'online');
+        const apoiador = !!item.apoiador;
+        const liberada = status === 'online' && (!item.apoiadorOnly || apoiador);
+        const tag = liberada ? 'a' : 'div';
+        const href = liberada ? ` href="${escapeHtml(item.href)}"` : '';
+        let badge = '';
+        if (item.apoiadorOnly && !apoiador) badge = '<span class="platform-badge is-apoiador">Apoiador</span>';
+        else if (status === 'update') badge = '<span class="platform-badge is-update">Update</span>';
+        else if (status !== 'online') badge = '<span class="platform-badge">Em breve</span>';
+        return `
+        <${tag} class="platform-item${liberada ? '' : ' is-disabled'}${status === 'update' ? ' is-update' : ''}"${href} style="text-decoration:none;color:inherit;">
+          <div class="item-icon"><img src="${escapeHtml(item.icon)}" alt="${escapeHtml(item.name)}" /></div>
+          <div class="item-text"><h4>${escapeHtml(item.name)}${badge}</h4><p>${escapeHtml(item.description || '')}</p></div>
+        </${tag}>
+      `;
+      }).join('');
+    }
+
+    async function carregarPlataformas() {
+      const grid = document.getElementById('platformGrid');
+      if (!grid) return;
+      grid.innerHTML = '<div class="platform-loading">Carregando plataformas da sua conta...</div>';
+      try {
+        const response = await fetch('/api/plataformas', { credentials: 'same-origin' });
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || 'Não foi possível carregar as plataformas.');
+        renderizarPlataformas(data.plataformas || []);
+      } catch (error) {
+        grid.innerHTML = `<div class="platform-empty">${escapeHtml(error.message || 'Erro ao carregar plataformas.')}</div>`;
+      }
+    }
+
+    function renderizarModalPendencias(pendencias) {
+      const lista = document.getElementById('pendenciasCategorias');
+      const subtitulo = document.getElementById('pendenciasPopupSub');
+      if (!lista) return;
+      const tarefas = Number(pendencias?.tarefas || 0);
+      const redacoes = Number(pendencias?.redacoes || 0);
+      const provas = Number(pendencias?.provas || 0);
+      const totalTarefas = tarefas + provas;
+      if (!totalTarefas && !redacoes) {
+        if (subtitulo) subtitulo.textContent = 'Você está em dia. Nenhuma pendência no momento.';
+        lista.innerHTML = '<div class="pendencias-empty">Nenhuma tarefa ou redação pendente.</div>';
+        return;
+      }
+      if (subtitulo) subtitulo.textContent = 'Veja onde estão suas atividades pendentes na Sala do Futuro.';
+      const categorias = [
+        { id: 'tarefas', titulo: 'TarefaSP', icone: 'images/tarefasp.png', qtd: totalTarefas, href: '/tarefas', singular: 'pendência', plural: 'pendências' },
+        { id: 'redacoes', titulo: 'Redação', icone: 'images/redacaosp.png', qtd: redacoes, href: '/redacao', singular: 'redação pendente', plural: 'redações pendentes' },
+      ];
+      lista.innerHTML = categorias.map((cat) => {
+        const vazio = cat.qtd <= 0;
+        let statusText = 'Nenhuma pendência';
+        if (!vazio) {
+          if (cat.id === 'tarefas') {
+            if (provas && tarefas) statusText = `${pluralizar(totalTarefas, 'pendência', 'pendências')} · ${pluralizar(tarefas, 'tarefa', 'tarefas')} · ${pluralizar(provas, 'prova', 'provas')}`;
+            else if (provas) statusText = pluralizar(provas, 'prova pendente', 'provas pendentes');
+            else statusText = pluralizar(tarefas, 'tarefa pendente', 'tarefas pendentes');
+          } else statusText = pluralizar(cat.qtd, cat.singular, cat.plural);
+        }
+        return `<div class="pendencias-categoria${vazio ? ' is-empty' : ''}">
+          <div class="pendencias-cat-icon"><img src="${cat.icone}" alt="" /></div>
+          <div class="pendencias-cat-info"><h4>${cat.titulo}</h4>${vazio ? '<p class="is-ok">Nenhuma pendência</p>' : `<p>${statusText}</p>`}</div>
+          <a class="pendencias-cat-go${vazio ? ' is-disabled' : ''}" href="${cat.href}" aria-label="Ir para ${cat.titulo}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>`;
+      }).join('');
+    }
+
+    function corPresenca(p) {
+      if (p < 0) return 'var(--text-muted)';
+      if (p >= 75) return '#3ddc84';
+      if (p >= 50) return '#ffb020';
+      return '#ff5f57';
+    }
+
+    function renderizarModalFaltas(faltas) {
+      const lista = document.getElementById('faltasCategorias');
+      const subtitulo = document.getElementById('faltasPopupSub');
+      if (!lista) return;
+      const disciplinas = faltas?.disciplinas || [];
+      const total = Number(faltas?.total || 0);
+      if (!disciplinas.length) {
+        if (subtitulo) subtitulo.textContent = total ? 'Detalhes por matéria indisponíveis.' : 'Nenhuma falta no bimestre atual.';
+        lista.innerHTML = '<div class="pendencias-empty">Nenhuma falta no bimestre.</div>';
+        return;
+      }
+      if (subtitulo) {
+        subtitulo.textContent = total
+          ? `Faltas e presença por matéria no bimestre atual · ${pluralizar(total, 'falta no total', 'faltas no total')}.`
+          : 'Você não teve nenhuma falta neste bimestre.';
+      }
+      lista.innerHTML = disciplinas.map((item) => {
+        const nome = escapeHtml(item.disciplina || 'Matéria');
+        const faltas = Number(item.faltas || 0);
+        const presenca = Number(item.presenca ?? -1);
+        const cor = corPresenca(presenca);
+        const faltaText = faltas > 0 ? pluralizar(faltas, 'falta', 'faltas') : 'Sem faltas';
+        const presencaText = presenca < 0 ? '—' : `${presenca}% de presença`;
+        const barra = presenca < 0 ? '' : `<div class="faltas-bar"><i style="width:${Math.max(0, Math.min(100, presenca))}%;background:${cor};"></i></div>`;
+        return `<div class="faltas-categoria">
+          <div class="faltas-cat-info">
+            <h4>${nome}</h4>
+            <p>${faltaText}</p>
+          </div>
+          <div class="faltas-presenca">
+            <strong style="color:${cor};">${presencaText}</strong>
+            <span>presença</span>
+            ${barra}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function configurarModalPendencias() {
+      App.registerPendenciasRenderer(renderizarModalPendencias);
+      App.registerFaltasRenderer(renderizarModalFaltas);
+    }
+
+    async function carregarResumoInicio() {
+      const pendenciasTotal = document.getElementById('pendenciasTotal');
+      const pendenciasDetalhe = document.getElementById('pendenciasDetalhe');
+      const faltasTotal = document.getElementById('faltasTotal');
+      const faltasDetalhe = document.getElementById('faltasDetalhe');
+      const cardPendencias = document.getElementById('cardPendencias');
+      const cardFaltas = document.getElementById('cardFaltas');
+      if (!pendenciasTotal) return;
+
+      try {
+        const response = await fetch('/api/inicio/resumo', { credentials: 'same-origin' });
+        const data = await response.json();
+        const pendencias = data.pendencias || {};
+        const faltas = data.faltas || {};
+        const avisos = data.avisos || {};
+
+        if (response.ok && data.success) {
+          App.setPendenciasResumo(pendencias);
+          App.setFaltasResumo(faltas);
+          pendenciasTotal.textContent = String(pendencias.total ?? 0);
+          pendenciasDetalhe.textContent = avisos.pendencias ? 'Não foi possível atualizar' : formatarPendenciasDetalhe(pendencias);
+          faltasTotal.textContent = String(faltas.total ?? 0);
+          faltasDetalhe.textContent = avisos.faltas ? 'Não foi possível atualizar' : formatarFaltasDetalhe(faltas);
+        } else {
+          throw new Error(data.message || 'Erro ao carregar');
+        }
+      } catch (error) {
+        pendenciasTotal.textContent = '—';
+        pendenciasDetalhe.textContent = 'Indisponível';
+        faltasTotal.textContent = '—';
+        faltasDetalhe.textContent = 'Indisponível';
+      } finally {
+        cardPendencias?.classList.remove('is-loading');
+        cardFaltas?.classList.remove('is-loading');
+      }
+    }
+
+    let _donationsData = [];
+    let _rankingData = [];
+    let _abaDoacoesAtiva = true;
+
+    function renderizarDoacoes(items) {
+      const topName = document.getElementById('topDonorName');
+      const topAmount = document.getElementById('topDonorAmount');
+      const lista = document.getElementById('donorList');
+      const loading = document.getElementById('donationsLoading');
+      if (!lista) return;
+      if (loading) loading.remove();
+
+      if (!items.length) {
+        if (topName) topName.textContent = 'Seja o primeiro';
+        if (topAmount) topAmount.textContent = '—';
+        lista.innerHTML = '<p class="donor-empty" style="color:var(--text-muted);font-size:13px;">Nenhuma doação ainda.</p>';
+        return;
+      }
+
+      const top = items.reduce((maior, item) => Number(item.amount) > Number(maior.amount) ? item : maior, items[0]);
+      if (topName) topName.textContent = top.payerName || 'Anônimo';
+      if (topAmount) topAmount.textContent = formatarMoeda(top.amount);
+
+      lista.innerHTML = items.map((item, index) => {
+        const tempo = formatarTempo(item.paidAt || item.createdAt);
+        return htmlLinhaDoador(item, index, `<div class="time">${tempo}</div>`);
+      }).join('');
+    }
+
+    function renderizarRanking(items) {
+      const topName = document.getElementById('topDonorName');
+      const topAmount = document.getElementById('topDonorAmount');
+      const lista = document.getElementById('donorList');
+      const loading = document.getElementById('donationsLoading');
+      if (!lista) return;
+      if (loading) loading.remove();
+
+      if (!items.length) {
+        if (topName) topName.textContent = 'Seja o primeiro';
+        if (topAmount) topAmount.textContent = '—';
+        lista.innerHTML = '<p class="donor-empty" style="color:var(--text-muted);font-size:13px;">Nenhuma doação ainda.</p>';
+        return;
+      }
+
+      const top = items[0];
+      if (topName) topName.textContent = top.payerName || 'Anônimo';
+      if (topAmount) topAmount.textContent = formatarMoeda(top.amount);
+
+      const total = items.length;
+      lista.innerHTML = items.map((item, index) => {
+        const posicao = index + 1;
+        const badge = `<span style="position:absolute;top:-4px;right:-4px;background:var(--purple);color:white;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">${posicao}</span>`;
+        const cor = corGradienteValor(total > 1 ? index / (total - 1) : 0);
+        return htmlLinhaDoador(item, index, '', badge, cor);
+      }).join('');
+    }
+
+    const LIMITE_MSG_DOADOR = 60;
+
+    function htmlMensagemDoador(texto) {
+      const msg = String(texto || '').trim();
+      if (!msg) return '';
+      if (msg.length <= LIMITE_MSG_DOADOR) {
+        return `<div class="msg">${escapeHtml(msg)}</div>`;
+      }
+      const curto = escapeHtml(msg.slice(0, LIMITE_MSG_DOADOR).trimEnd()) + '…';
+      const completo = escapeHtml(msg);
+      return `<div class="msg msg--expansivel">`
+        + `<span class="msg-texto" data-curto="${curto}" data-completo="${completo}">${curto}</span>`
+        + `<button type="button" class="msg-toggle">ler mais</button>`
+        + `</div>`;
+    }
+
+    function corGradienteValor(t) {
+      const o = [255, 140, 0];
+      const g = [0, 200, 83];
+      const r = Math.round(o[0] + (g[0] - o[0]) * t);
+      const gg = Math.round(o[1] + (g[1] - o[1]) * t);
+      const b = Math.round(o[2] + (g[2] - o[2]) * t);
+      return `rgb(${r},${gg},${b})`;
+    }
+
+    function htmlLinhaDoador(item, index, extraAmt, avatarBadge, priceColor) {
+      const nome = escapeHtml(item.payerName || 'Anônimo');
+      const valor = formatarMoeda(item.amount);
+      const corPreco = priceColor ? `style="color:${priceColor};"` : '';
+      const inicial = escapeHtml(inicialDoador(item.payerName));
+      const mensagem = htmlMensagemDoador(item.message);
+      const resposta = item.reply ? `<div class="msg-reply">${escapeHtml(item.reply)}</div>` : '';
+      return `<div class="donor-item">
+        <div class="donor-row">
+          <div class="donor-av" style="background:${corAvatarDoador(index)};position:relative;">${inicial}${avatarBadge || ''}</div>
+          <div class="donor-info"><div class="n">${nome}</div>${mensagem}${resposta}</div>
+          <div class="donor-amt"><div class="price" ${corPreco}>${valor}</div>${extraAmt || ''}</div>
+        </div>
+      </div>`;
+    }
+
+    function atualizarAbaDoacoes() {
+      const title = document.getElementById('donationsTitle');
+      if (_abaDoacoesAtiva) {
+        if (title) title.textContent = 'Doações recentes';
+        renderizarDoacoes(_donationsData);
+      } else {
+        if (title) title.textContent = 'Top maiores doações';
+        renderizarRanking(_rankingData);
+      }
+    }
+
+    async function carregarDadosDoacoes() {
+      try {
+        const [statsRes, donationsRes, rankingRes] = await Promise.all([
+          fetch('/api/doacoes/stats', { credentials: 'same-origin' }),
+          fetch('/api/doacoes/recentes?limit=10', { credentials: 'same-origin' }),
+          fetch('/api/doacoes/ranking?limit=10', { credentials: 'same-origin' }),
+        ]);
+
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          const totalEl = document.getElementById('donationTotal');
+          if (totalEl) totalEl.textContent = String(stats.paidCountToday || 0);
+        }
+
+        if (donationsRes.ok) {
+          const donations = await donationsRes.json();
+          _donationsData = donations.donations || donations.items || donations.data || [];
+        }
+
+        if (rankingRes.ok) {
+          const ranking = await rankingRes.json();
+          _rankingData = ranking.donations || ranking.items || ranking.data || [];
+        }
+
+        atualizarAbaDoacoes();
+      } catch (error) {
+        const lista = document.getElementById('donorList');
+        const loading = document.getElementById('donationsLoading');
+        if (loading) loading.remove();
+        if (lista) lista.innerHTML = '<p class="donor-empty" style="color:var(--text-muted);font-size:13px;">Não foi possível carregar as doações.</p>';
+      }
+    }
+
+    function configurarAbasDoacoes() {
+      const lista = document.getElementById('donorList');
+      if (lista && !lista.dataset.toggleLigado) {
+        lista.dataset.toggleLigado = '1';
+        lista.addEventListener('click', (e) => {
+          const btn = e.target.closest('.msg-toggle');
+          if (!btn) return;
+          const wrap = btn.closest('.msg--expansivel');
+          const span = wrap && wrap.querySelector('.msg-texto');
+          if (!span) return;
+          const expandido = wrap.classList.toggle('expandido');
+          span.innerHTML = expandido ? span.dataset.completo : span.dataset.curto;
+          btn.textContent = expandido ? 'ler menos' : 'ler mais';
+        });
+      }
+
+      const tabDoacoes = document.getElementById('tabDoacoes');
+      const tabRanking = document.getElementById('tabRanking');
+      if (!tabDoacoes || !tabRanking) return;
+      tabDoacoes.addEventListener('click', () => {
+        _abaDoacoesAtiva = true;
+        tabDoacoes.classList.add('active');
+        tabRanking.classList.remove('active');
+        atualizarAbaDoacoes();
+      });
+      tabRanking.addEventListener('click', () => {
+        _abaDoacoesAtiva = false;
+        tabRanking.classList.add('active');
+        tabDoacoes.classList.remove('active');
+        atualizarAbaDoacoes();
+      });
+    }
+
+    function atualizarLayoutPlataformas() {
+      document.body.classList.toggle('plataformas-page', location.pathname === '/plataformas');
+    }
+
+    const PROMO_POPUPS_COOLDOWN_MS = 10 * 60 * 1000;
+    const PROMO_POPUPS_STORAGE_KEY = 'cmsp_promo_popups_last';
+    const PARTNER_CLOSE_COUNTDOWN_S = 3;
+    let promoAoFechar = null;
+    let partnerCountdownTimer = null;
+
+    function podeMostrarPromoPopups() {
+      try {
+        const last = Number(localStorage.getItem(PROMO_POPUPS_STORAGE_KEY) || 0);
+        return Date.now() - last >= PROMO_POPUPS_COOLDOWN_MS;
+      } catch (err) { return true; }
+    }
+    function marcarPromoPopupsVistos() {
+      try { localStorage.setItem(PROMO_POPUPS_STORAGE_KEY, String(Date.now())); } catch (err) {}
+    }
+
+    function fecharPopupDiscord() {
+      const overlay = document.getElementById('discordPopup');
+      const closeBtn = document.getElementById('discordPopupClose');
+      if (!overlay || !overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (closeBtn) closeBtn.disabled = false;
+      const next = promoAoFechar;
+      promoAoFechar = null;
+      if (typeof next === 'function') setTimeout(next, 400);
+      else window.App?.syncOverlayScrollLock?.();
+    }
+
+    function fecharPopupParceria() {
+      const overlay = document.getElementById('partnerPopup');
+      const closeBtn = document.getElementById('partnerPopupClose');
+      if (!overlay || !overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (partnerCountdownTimer) { clearInterval(partnerCountdownTimer); partnerCountdownTimer = null; }
+      if (closeBtn) { closeBtn.classList.remove('visible'); closeBtn.disabled = true; closeBtn.textContent = '✕'; }
+      const next = promoAoFechar;
+      promoAoFechar = null;
+      if (typeof next === 'function') setTimeout(next, 400);
+      else window.App?.syncOverlayScrollLock?.();
+    }
+
+    function iniciarCountdownFechar(overlay, closeBtn, onTimer) {
+      let restante = PARTNER_CLOSE_COUNTDOWN_S;
+      closeBtn.classList.add('visible');
+      closeBtn.disabled = true;
+      closeBtn.textContent = String(restante);
+      const timer = setInterval(() => {
+        if (!overlay.classList.contains('open')) { clearInterval(timer); onTimer(null); return; }
+        restante -= 1;
+        if (restante > 0) closeBtn.textContent = String(restante);
+        else {
+          clearInterval(timer);
+          onTimer(null);
+          closeBtn.textContent = '✕';
+          closeBtn.disabled = false;
+        }
+      }, 1000);
+      onTimer(timer);
+    }
+
+    function abrirPopupParceria() {
+      const overlay = document.getElementById('partnerPopup');
+      const closeBtn = document.getElementById('partnerPopupClose');
+      if (!overlay || !closeBtn) return;
+      if (partnerCountdownTimer) clearInterval(partnerCountdownTimer);
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      iniciarCountdownFechar(overlay, closeBtn, (t) => { partnerCountdownTimer = t; });
+      promoAoFechar = window.UsuarioApoiador ? null : abrirPopupApoiador;
+    }
+
+    function abrirPopupPD() {
+      const overlay = document.getElementById('pdPopup');
+      // Sem o elemento, segue a cadeia em vez de travá-la no meio.
+      if (!overlay) return abrirPopupParceria();
+      promoAoFechar = abrirPopupParceria;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      window.App?.lockPageScroll?.();
+    }
+
+    function fecharPopupPD() {
+      const overlay = document.getElementById('pdPopup');
+      const closeBtn = document.getElementById('pdPopupClose');
+      if (!overlay || !overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (closeBtn) closeBtn.disabled = false;
+      const next = promoAoFechar;
+      promoAoFechar = null;
+      if (typeof next === 'function') setTimeout(next, 400);
+      else window.App?.syncOverlayScrollLock?.();
+    }
+
+    function abrirPopupApoiador() {
+      const overlay = document.getElementById('apoiadorPopup');
+      if (!overlay) return;
+      marcarPromoPopupsVistos();
+      promoAoFechar = null;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      window.App?.lockPageScroll?.();
+    }
+
+    function fecharPopupApoiador() {
+      const overlay = document.getElementById('apoiadorPopup');
+      const closeBtn = document.getElementById('apoiadorPopupClose');
+      if (!overlay || !overlay.classList.contains('open')) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      if (closeBtn) closeBtn.disabled = false;
+      const next = promoAoFechar;
+      promoAoFechar = null;
+      if (typeof next === 'function') setTimeout(next, 400);
+      else window.App?.syncOverlayScrollLock?.();
+    }
+
+    function abrirPopupDiscord() {
+      const overlay = document.getElementById('discordPopup');
+      if (!overlay) return;
+      marcarPromoPopupsVistos();
+      // Ao fechar o oficial vem o da Platform Destroyer, e só depois a parceria.
+      promoAoFechar = abrirPopupPD;
+      setTimeout(() => {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        window.App?.lockPageScroll?.();
+      }, 800);
+    }
+
+    function iniciarCicloPromoPopups() {
+      if (!podeMostrarPromoPopups()) return;
+      const ids = ['discordPopup', 'pdPopup', 'partnerPopup', 'apoiadorPopup'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el?.classList.contains('open')) return;
+      }
+      abrirPopupDiscord();
+    }
+
+    function configurarPromoPopups() {
+      if (window._cmspPromoPopupsProntos) return;
+      window._cmspPromoPopupsProntos = true;
+
+      document.getElementById('discordPopupClose')?.addEventListener('click', fecharPopupDiscord);
+      document.getElementById('discordPopup')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) fecharPopupDiscord(); });
+      document.getElementById('pdPopupClose')?.addEventListener('click', fecharPopupPD);
+      document.getElementById('pdPopup')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) fecharPopupPD(); });
+      document.getElementById('partnerPopupClose')?.addEventListener('click', fecharPopupParceria);
+      document.getElementById('apoiadorPopupClose')?.addEventListener('click', fecharPopupApoiador);
+      document.getElementById('apoiadorPopup')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) fecharPopupApoiador(); });
+
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('#btnApoioBenef')) abrirPopupApoiador();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        const order = ['apoiadorPopup', 'partnerPopup', 'pdPopup', 'discordPopup'];
+        for (const id of order) {
+          const el = document.getElementById(id);
+          if (el?.classList.contains('open')) {
+            const btn = el.querySelector('.discord-popup-close');
+            if (btn && !btn.disabled) btn.click();
+            return;
+          }
+        }
+      });
+
+      const couponBtn = document.getElementById('partnerCouponBtn');
+      const copyHint = document.getElementById('partnerCopyHint');
+      if (couponBtn && copyHint) {
+        couponBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText('cmsp');
+            copyHint.textContent = 'Cupom copiado!';
+            copyHint.classList.add('copied');
+            setTimeout(() => { copyHint.textContent = 'Clique para copiar'; copyHint.classList.remove('copied'); }, 2000);
+          } catch (err) {
+            copyHint.textContent = 'Não foi possível copiar automaticamente';
+            setTimeout(() => { copyHint.textContent = 'Clique para copiar'; }, 2000);
+          }
+        });
+      }
+    }
+
+    function iniciarAgendaPromoPopups() {
+      configurarPromoPopups();
+      iniciarCicloPromoPopups();
+      if (!window._cmspPromoPopupsTimer) {
+        window._cmspPromoPopupsTimer = setInterval(iniciarCicloPromoPopups, PROMO_POPUPS_COOLDOWN_MS);
+      }
+    }
+
+    async function carregarSessao() {
+      try {
+        const userPromise = App.requireAuth();
+        const resumoPromise = carregarResumoInicio();
+        const plataformasPromise = carregarPlataformas();
+        const user = await userPromise;
+        if (!user) return;
+        aplicarUsuario(user);
+        await Promise.all([resumoPromise, plataformasPromise]);
+        iniciarAgendaPromoPopups();
+      } catch (error) {
+        window.location.href = '/';
+      }
+    }
+
+    if (!window._cmspLayoutPopstateReady) {
+      window._cmspLayoutPopstateReady = true;
+      window.addEventListener('popstate', atualizarLayoutPlataformas);
+      window.addEventListener('cmsp:navigated', () => {
+        atualizarLayoutPlataformas();
+        if (document.getElementById('platformGrid')) carregarPlataformas();
+      });
+    }
+
+    App.marcarNavAtiva(location.pathname === '/plataformas' ? 'plataformas' : 'inicio');
+    App.bindLogout();
+    document.getElementById('btnVerDoacoes')?.addEventListener('click', () => {
+      App.scrollElementIntoView(document.getElementById('doacoesRecentes'), { offset: 16 });
+    });
+
+    carregarSessao();
+    carregarDadosDoacoes();
+    configurarAbasDoacoes();
+    configurarModalPendencias();
+    if (document.getElementById('faltasPopup')) App.initFaltasModal();
+    atualizarLayoutPlataformas();
+    configurarPromoPopups();
+  })();
+</script>
+
+<script src="https://pl30573982.effectivecpmnetwork.com/60/16/86/601686227b6642faa41b559f82bfab7e.js"></script>
+  <script src="js/online.js"></script>
+  <script src="js/suporte.js"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"b7f16d5c140c4fd5aa1780eb29145e57","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>
